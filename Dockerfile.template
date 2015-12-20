@@ -1,8 +1,11 @@
 #base-image for node on any machine using a template var
 FROM resin/%%RESIN_MACHINE_NAME%%-node
 
+# Install sound deps.
+RUN apt-get update && apt-get install -y alsa-utils libasound2-dev
+
 # install deps on build server, making sure to clean up the artifacts it creates in order to reduce the image size.
-RUN npm install express && npm cache clean && rm -rf /tmp/*
+RUN npm install express && npm install request@2.55.0 && npm install lame@1.0.2 && npm install speaker@~0.2.6 && npm cache clean && rm -rf /tmp/*
 
 # copy all files to /usr/src/app  dir
 COPY . /usr/src/app 
